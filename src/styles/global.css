@@ -147,3 +147,11 @@ html[data-theme='dark'] .toastui-calendar-daygrid-cell,
 html[data-theme='dark'] .toastui-calendar-month-week-item {
   border-color: var(--border);
 }
+
+/* Native overlay sits under the month grid (no z-index). Raise it so clicks on the calendar close the detail popup. */
+
+.toastui-calendar-popup-overlay {
+
+  z-index: 1;
+
+}
