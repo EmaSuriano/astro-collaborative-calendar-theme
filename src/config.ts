@@ -19,14 +19,15 @@ export const appConfig = {
   spreadsheetLink:
     'https://docs.google.com/spreadsheets/d/1e6mNWZZLuBBFk2c-zGRSSh8g5mqoQUPbW78NmA_EI88/edit?usp=sharing',
   /**
-   * Optional explicit CSV endpoint. When omitted, the build-time loader
-   * derives export / gviz URLs from `spreadsheetLink`.
+   * Published-to-the-web URL (html or csv). The loader turns `/pubhtml`
+   * into `pub?output=csv` so GitHub Actions can fetch rows without auth.
    */
-  spreadsheetCsvUrl: undefined as string | undefined,
+  spreadsheetCsvUrl:
+    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQruXhA2vDFmp22O7KcqzvGdNw2dBQIRZjD0C8JlcGn5_hp3wOIX6dHUfAW0kLNhyUuqXDiRLPzA-dW/pubhtml',
   /**
    * Spreadsheet column headers for each EventInfo field.
    * Defaults match the original Gatsby form questions. Matching is
-   * case-insensitive and ignores punctuation, spaces, and underscores,
+   * case-insensitive and ignores punctuation, spaces, underscores, and emoji,
    * so GraphQL-style slugs like `whatIsTheName____` also work.
    */
   sheetColumns: {
