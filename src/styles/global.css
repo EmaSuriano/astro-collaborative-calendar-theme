@@ -22,7 +22,7 @@ html[data-theme='dark'] {
   --toolbar: #221f1c;
   --text: #f5f5f4;
   --muted: #a8a29e;
-  --border: #44403c;
+  --border: #78716c;
   --brand: #2dd4bf;
   --brand-dark: #5eead4;
   --accent: #f472b6;
@@ -86,10 +86,64 @@ button:focus-visible {
   font-weight: 600;
 }
 
+/* Toast UI ships a light popup and #333 event titles. Force both to follow the page theme. */
+html[data-theme='dark'] .toastui-calendar-floating-layer,
 html[data-theme='dark'] .toastui-calendar-popup,
-html[data-theme='dark'] .toastui-calendar-see-more {
-  background-color: var(--surface);
+html[data-theme='dark'] .toastui-calendar-popup-container,
+html[data-theme='dark'] .toastui-calendar-detail-container,
+html[data-theme='dark'] .toastui-calendar-see-more,
+html[data-theme='dark'] .toastui-calendar-see-more-container,
+html[data-theme='dark'] .toastui-calendar-see-more-popup {
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow);
+}
+
+html[data-theme='dark'] .toastui-calendar-popup-section,
+html[data-theme='dark'] .toastui-calendar-popup-section-item,
+html[data-theme='dark'] .toastui-calendar-popup-section-item span,
+html[data-theme='dark'] .toastui-calendar-popup-section-item-label,
+html[data-theme='dark'] .toastui-calendar-detail-item,
+html[data-theme='dark'] .toastui-calendar-content,
+html[data-theme='dark'] [class*='toastui-calendar-template-popup'] {
+  color: var(--text) !important;
+}
+
+html[data-theme='dark'] .toastui-calendar-popup a,
+html[data-theme='dark'] .toastui-calendar-popup a.event-detail-link {
+  color: var(--brand-dark) !important;
+}
+
+html[data-theme='dark'] .toastui-calendar-popup-top-line {
+  background-color: var(--brand) !important;
+}
+
+html[data-theme='dark'] .toastui-calendar-weekday-event-title,
+html[data-theme='dark'] .toastui-calendar-weekday-event,
+html[data-theme='dark'] .toastui-calendar-month-event,
+html[data-theme='dark'] .toastui-calendar-month-dot-event,
+html[data-theme='dark'] .toastui-calendar-event-title,
+html[data-theme='dark'] .toastui-calendar-event-time,
+html[data-theme='dark'] .toastui-calendar-template-time,
+html[data-theme='dark'] .toastui-calendar-template-monthGridEvent,
+html[data-theme='dark'] .toastui-calendar-template-monthMoreTitleDate {
+  color: var(--text) !important;
+}
+
+html[data-theme='dark'] .toastui-calendar-grid-cell-date,
+html[data-theme='dark'] .toastui-calendar-weekday-grid-date,
+html[data-theme='dark'] .toastui-calendar-month-daygrid-date,
+html[data-theme='dark'] .toastui-calendar-daygrid-cell {
   color: var(--text);
   border-color: var(--border);
-  box-shadow: var(--shadow);
+}
+
+html[data-theme='dark'] .toastui-calendar-layout,
+html[data-theme='dark'] .toastui-calendar-month,
+html[data-theme='dark'] .toastui-calendar-daygrid-grid,
+html[data-theme='dark'] .toastui-calendar-month-daygrid,
+html[data-theme='dark'] .toastui-calendar-daygrid-cell,
+html[data-theme='dark'] .toastui-calendar-month-week-item {
+  border-color: var(--border);
 }
