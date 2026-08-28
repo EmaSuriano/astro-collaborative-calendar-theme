@@ -7,6 +7,8 @@ on:
   schedule:
     # Rebuild so new Google Form answers show up without a git push.
     - cron: '0 */6 * * *'
+  repository_dispatch:
+    types: [rebuild-site]
 
 permissions:
   contents: read
