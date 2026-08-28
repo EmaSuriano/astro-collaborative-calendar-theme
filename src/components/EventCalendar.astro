@@ -1,0 +1,151 @@
+---
+import '@toast-ui/calendar/dist/toastui-calendar.min.css';
+import type { EventInfo } from '../types';
+
+interface Props {
+  events: EventInfo[];
+}
+
+const { events } = Astro.props;
+---
+
+<section id="calendars" class="calendar-section" aria-label="Event calendar">
+  <div class="calendar-card" data-calendar-app>
+    <div class="calendar-toolbar">
+      <div class="calendar-nav" role="group" aria-label="Navigate calendar">
+        <button type="button" data-cal-action="prev" aria-label="Previous period">‹</button>
+        <button type="button" data-cal-action="today">Today</button>
+        <button type="button" data-cal-action="next" aria-label="Next period">›</button>
+      </div>
+
+      <h2 class="calendar-title" data-cal-title>Calendar</h2>
+
+      <div class="calendar-views" role="group" aria-label="Calendar view">
+        <button type="button" data-cal-view="month" aria-pressed="true">Month</button>
+        <button type="button" data-cal-view="week" aria-pressed="false">Week</button>
+        <button type="button" data-cal-view="day" aria-pressed="false">Day</button>
+      </div>
+    </div>
+
+    <div class="calendar-frame" data-calendar-root data-events={JSON.stringify(events)}></div>
+  </div>
+</section>
+
+<script>
+  import { initEventCalendar } from '../scripts/init-calendar';
+  import type { EventInfo } from '../types';
+
+  const apps = document.querySelectorAll<HTMLElement>('[data-calendar-app]');
+
+  for (const app of apps) {
+    const frame = app.querySelector<HTMLElement>('[data-calendar-root]');
+    const events = JSON.parse(frame?.dataset.events ?? '[]') as EventInfo[];
+    initEventCalendar(app, events);
+  }
+</script>
+
+<style>
+  .calendar-section {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto 4rem;
+  }
+
+  .calendar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .calendar-toolbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0.75rem;
+    align-items: center;
+    padding: 1rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    background: #fffcf9;
+  }
+
+  .calendar-nav,
+  .calendar-views {
+    display: flex;
+    gap: 0.4rem;
+  }
+
+  .calendar-views {
+    justify-content: flex-end;
+  }
+
+  .calendar-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    text-align: center;
+    text-transform: capitalize;
+  }
+
+  .calendar-toolbar button {
+    font: inherit;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: white;
+    color: var(--text);
+    border-radius: 999px;
+    padding: 0.4rem 0.85rem;
+    min-height: 2.25rem;
+  }
+
+  .calendar-toolbar button:hover,
+  .calendar-toolbar button:focus-visible {
+    border-color: var(--brand);
+    color: var(--brand-dark);
+  }
+
+  .calendar-toolbar button[aria-pressed='true'],
+  .calendar-toolbar button[data-cal-action='today'] {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: white;
+  }
+
+  .calendar-toolbar button[data-cal-action='today']:hover,
+  .calendar-toolbar button[aria-pressed='true']:hover {
+    background: var(--brand-dark);
+    border-color: var(--brand-dark);
+    color: white;
+  }
+
+  .calendar-frame {
+    height: min(72vh, 720px);
+    min-height: 560px;
+  }
+
+  :global(.toastui-calendar-popup a.event-detail-link) {
+    display: inline-flex;
+    margin-top: 0.35rem;
+    color: var(--brand-dark);
+    font-weight: 600;
+  }
+
+  @media (max-width: 720px) {
+    .calendar-toolbar {
+      grid-template-columns: 1fr;
+      justify-items: center;
+    }
+
+    .calendar-nav,
+    .calendar-views {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .calendar-frame {
+      min-height: 480px;
+      height: 560px;
+    }
+  }
+</style>

@@ -1,0 +1,36 @@
+---
+import { appConfig } from '../config';
+---
+
+<footer>
+  <p>
+    Developed by
+    <a href={appConfig.author.url} rel="noopener noreferrer">{appConfig.author.name}</a>
+  </p>
+  <p>Built with Astro and TOAST UI Calendar</p>
+</footer>
+
+<style>
+  footer {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 1.5rem 0 2.5rem;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  a {
+    color: var(--brand-dark);
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    footer {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
