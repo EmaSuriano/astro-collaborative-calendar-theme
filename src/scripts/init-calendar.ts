@@ -53,6 +53,71 @@ function formatTitle(calendar: Calendar, view: CalendarView): string {
   return date.toLocaleDateString('en-GB', WEEK_TITLE);
 }
 
+function readThemeToken(name: string, fallback: string): string {
+  const value = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  return value || fallback;
+}
+
+function isDarkTheme(): boolean {
+  return document.documentElement.dataset.theme === 'dark';
+}
+
+function buildCalendarTheme() {
+  const border = readThemeToken('--border', '#e7e5e4');
+  const toolbar = readThemeToken('--toolbar', '#fafaf9');
+  const surface = readThemeToken('--surface', '#ffffff');
+  const text = readThemeToken('--text', '#1c1917');
+  const muted = readThemeToken('--muted', '#57534e');
+  const brand = readThemeToken('--brand', '#0f766e');
+  const accent = readThemeToken('--accent', '#be185d');
+  const dark = isDarkTheme();
+
+  return {
+    common: {
+      backgroundColor: 'transparent',
+      border: `1px solid ${border}`,
+      holiday: { color: accent },
+      saturday: { color: dark ? muted : '#44403c' },
+      today: { color: brand },
+      dayName: { color: text },
+    },
+    month: {
+      dayName: {
+        borderLeft: 'none',
+        backgroundColor: dark ? toolbar : '#fafaf9',
+      },
+      weekend: { backgroundColor: dark ? toolbar : '#fafaf9' },
+      dayExceptThisMonth: {
+        color: dark ? 'rgba(168, 162, 158, 0.7)' : 'rgba(51, 51, 51, 0.4)',
+      },
+      moreView: {
+        backgroundColor: surface,
+        border: `1px solid ${border}`,
+        boxShadow: dark ? '0 2px 6px 0 rgba(0, 0, 0, 0.45)' : '0 2px 6px 0 rgba(0, 0, 0, 0.1)',
+      },
+    },
+    week: {
+      today: {
+        color: brand,
+        backgroundColor: dark ? 'rgba(45, 212, 191, 0.12)' : 'rgba(15, 118, 110, 0.06)',
+      },
+      nowIndicatorLabel: { color: brand },
+      nowIndicatorBullet: { backgroundColor: brand },
+      nowIndicatorToday: { border: `1px solid ${brand}` },
+      nowIndicatorPast: { border: `1px dashed ${brand}` },
+      dayName: {
+        backgroundColor: dark ? toolbar : surface,
+        borderTop: `1px solid ${border}`,
+        borderBottom: `1px solid ${border}`,
+      },
+      weekend: { backgroundColor: dark ? toolbar : '#fafaf9' },
+      futureTime: { color: text },
+      pastTime: { color: muted },
+      pastDay: { color: muted },
+    },
+  };
+}
+
 export function initEventCalendar(root: HTMLElement, events: EventInfo[]): Calendar {
   const container = root.querySelector<HTMLElement>('[data-calendar-root]');
   const titleEl = root.querySelector<HTMLElement>('[data-cal-title]');
@@ -89,32 +154,7 @@ export function initEventCalendar(root: HTMLElement, events: EventInfo[]): Calen
       taskView: false,
       eventView: true,
     },
-    theme: {
-      common: {
-        backgroundColor: 'transparent',
-        border: '1px solid #e7e5e4',
-        holiday: { color: '#be185d' },
-        saturday: { color: '#44403c' },
-        today: { color: '#0f766e' },
-      },
-      month: {
-        dayName: {
-          borderLeft: 'none',
-          backgroundColor: '#fafaf9',
-        },
-        weekend: { backgroundColor: '#fafaf9' },
-      },
-      week: {
-        today: {
-          color: '#0f766e',
-          backgroundColor: 'rgba(15, 118, 110, 0.06)',
-        },
-        nowIndicatorLabel: { color: '#0f766e' },
-        nowIndicatorBullet: { backgroundColor: '#0f766e' },
-        nowIndicatorToday: { border: '1px solid #0f766e' },
-        nowIndicatorPast: { border: '1px dashed #0f766e' },
-      },
-    },
+    theme: buildCalendarTheme(),
     template: {
       popupDetailBody(event) {
         const raw = event.raw as { eventLink?: string } | undefined;
@@ -133,6 +173,12 @@ export function initEventCalendar(root: HTMLElement, events: EventInfo[]): Calen
   });
 
   calendar.createEvents(events.map(toEventObject));
+
+  const applyTheme = () => {
+    calendar.setTheme(buildCalendarTheme());
+  };
+
+  document.addEventListener('themechange', applyTheme);
 
   const syncTitle = () => {
     if (titleEl) {
