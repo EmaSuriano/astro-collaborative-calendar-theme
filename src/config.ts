@@ -4,8 +4,8 @@ export const appConfig = {
   description:
     'A public event calendar for meetups and organizers. Browse what is happening this month, open an event for details, and share the page with your community.',
   /**
-   * How many months ahead to show, including the current month.
-   * Matches the original Gatsby starter's `limitMonthInTheFuture`.
+   * How many months ahead to include, counting the current month.
+   * Past events are kept so the Toast UI calendar can go backward.
    */
   limitMonthInTheFuture: 4,
   githubUrl: 'https://github.com/EmaSuriano/astro-collaborative-calendar-theme',
