@@ -39,3 +39,82 @@ export function parseEventDate(date: string): Date {
 
   return new Date(trimmed);
 }
+
+export type ClockTime = {
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+/**
+ * Parse a Google Forms time-question value.
+ * Examples: `10:10:00 AM`, `10:10 AM`, `22:10`, `22:10:00`.
+ */
+export function parseClockTime(value: string | undefined): ClockTime | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return undefined;
+  }
+
+  const match = /^(\d{1,2}):(\d{2})(?::(\d{2}))?(?:\s*([AaPp]\.?[Mm]\.?))?$/.exec(
+    trimmed,
+  );
+  if (!match) {
+    return undefined;
+  }
+
+  let hours = Number(match[1]);
+  const minutes = Number(match[2]);
+  const seconds = Number(match[3] ?? 0);
+  const ampm = match[4]?.replace(/\./g, '').toLowerCase();
+
+  if (minutes > 59 || seconds > 59) {
+    return undefined;
+  }
+
+  if (ampm) {
+    if (hours < 1 || hours > 12) {
+      return undefined;
+    }
+    hours = hours === 12 ? (ampm === 'am' ? 0 : 12) : hours + (ampm === 'pm' ? 12 : 0);
+  } else if (hours > 23) {
+    return undefined;
+  }
+
+  return { hours, minutes, seconds };
+}
+
+/** Date-only sheet values stay midnight; a Time column overrides the clock. */
+export function startOfEvent(event: { date: string; time?: string }): Date {
+  const date = parseEventDate(event.date);
+  const clock = parseClockTime(event.time);
+
+  if (!clock) {
+    return date;
+  }
+
+  return new Date(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
+    clock.hours,
+    clock.minutes,
+    clock.seconds,
+  );
+}
+
+export function isAllDayEvent(event: { date: string; time?: string }): boolean {
+  if (parseClockTime(event.time)) {
+    return false;
+  }
+
+  const date = parseEventDate(event.date);
+  return (
+    date.getHours() === 0 && date.getMinutes() === 0 && date.getSeconds() === 0
+  );
+}
+

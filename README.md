@@ -37,6 +37,7 @@ The original write-up is [Building a collaborative calendar with Google and Gats
 1. **Create a Google Form** ([forms.new](https://forms.new)) with questions for the event name, when, where, and a link. The demo uses:
    - What is the name?
    - When?
+   - Time (optional; shown on the calendar)
    - Where?
    - Link to the event
 2. **Send responses to a spreadsheet.** In the form, open the Responses tab and click the green Sheets icon ("View responses in Sheets"). New form answers will append as rows.
@@ -78,9 +79,11 @@ The site base is `/astro-collaborative-calendar-theme` so assets work on GitHub 
 
 ## Events
 
-Each event uses the same fields as the Gatsby starter: `id`, `eventName`, `date`, `eventLink`, `place`.
+Each event uses the same fields as the Gatsby starter: `id`, `eventName`, `date`, `eventLink`, `place`, plus optional `time`.
 
 `date` can be ISO 8601, `MM/dd/yyyy`, `M/D/YYYY` (no leading zeros), or a datetime string Google Sheets often emits (`M/D/YYYY HH:mm:ss`).
+
+`time` is the Google Forms time question (column `Time`). Values like `10:10:00 AM` become timed events on the calendar; a blank Time cell stays all-day. Timed events last 90 minutes by default.
 
 ## Deploy
 
