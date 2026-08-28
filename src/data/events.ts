@@ -1,11 +1,13 @@
 import type { EventInfo } from '../types';
 
 /**
- * Static sample events for the theme demo.
+ * Static sample events for the theme demo and for build-time fallback
+ * when the Google Spreadsheet CSV cannot be read (unpublished sheet,
+ * 401, network error, or empty rows). `loadEvents()` in loadEvents.ts
+ * prefers live form answers and only uses this list as a fallback.
  *
  * Dates are computed from "today" at build time so the calendar always
- * looks populated across this month and the next one or two. Swap this
- * module for a Google Sheets fetch later — keep the EventInfo shape.
+ * looks populated across this month and the next one or two.
  */
 const samples: Omit<EventInfo, 'id' | 'date'>[] = [
   {

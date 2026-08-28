@@ -5,9 +5,10 @@ import EventCalendar from '../components/EventCalendar.astro';
 import Footer from '../components/Footer.astro';
 import GithubCorner from '../components/GithubCorner.astro';
 import { appConfig } from '../config';
-import { events } from '../data/events';
+import { loadEvents } from '../data/loadEvents';
 import { filterEvents } from '../utils/filterEvents';
 
+const events = await loadEvents();
 const visibleEvents = filterEvents(events, appConfig.limitMonthInTheFuture);
 ---
 
