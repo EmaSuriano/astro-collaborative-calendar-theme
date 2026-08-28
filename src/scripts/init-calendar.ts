@@ -156,14 +156,14 @@ export function initEventCalendar(root: HTMLElement, events: EventInfo[]): Calen
     },
     theme: buildCalendarTheme(),
     template: {
-      popupDetailBody(event) {
+      popupDetailBody(event: EventObject) {
         const raw = event.raw as { eventLink?: string } | undefined;
         const link = raw?.eventLink ?? event.body;
         if (!link) return '';
-        const safe = escapeHtml(link);
+        const safe = escapeHtml(String(link));
         return `<a class="event-detail-link" href="${safe}" target="_blank" rel="noopener noreferrer">Open event page</a>`;
       },
-      popupDetailLocation({ location }) {
+      popupDetailLocation({ location }: EventObject) {
         return location ? escapeHtml(location) : '';
       },
       popupDetailState() {
