@@ -35,5 +35,6 @@ export const appConfig = {
     date: 'When?',
     eventLink: 'Link to the event',
     place: 'Where?',
+    time: 'Time',
   },
 };

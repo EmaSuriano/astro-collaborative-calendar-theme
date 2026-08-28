@@ -1,7 +1,7 @@
 import Calendar from '@toast-ui/calendar';
 import type { EventObject } from '@toast-ui/calendar';
 import type { EventInfo } from '../types';
-import { parseEventDate } from '../utils/parseEventDate';
+import { isAllDayEvent, startOfEvent } from '../utils/parseEventDate';
 
 const CALENDAR_ID = 'community';
 const DEFAULT_DURATION_MS = 90 * 60 * 1000;
@@ -24,8 +24,9 @@ function escapeHtml(value: string): string {
 }
 
 function toEventObject(event: EventInfo): EventObject {
-  const start = parseEventDate(event.date);
-  const end = new Date(start.getTime() + DEFAULT_DURATION_MS);
+  const start = startOfEvent(event);
+  const allDay = isAllDayEvent(event);
+  const end = allDay ? start : new Date(start.getTime() + DEFAULT_DURATION_MS);
 
   return {
     id: event.id,
@@ -33,11 +34,12 @@ function toEventObject(event: EventInfo): EventObject {
     title: event.eventName,
     body: event.eventLink,
     location: event.place,
-    category: 'time',
+    category: allDay ? 'allday' : 'time',
+    isAllday: allDay,
     start,
     end,
     isReadOnly: true,
-    raw: { eventLink: event.eventLink },
+    raw: { eventLink: event.eventLink, time: event.time },
   };
 }
 

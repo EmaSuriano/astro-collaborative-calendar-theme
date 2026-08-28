@@ -14,6 +14,7 @@ const FIELD_ALIASES: Record<EventField, string[]> = {
   date: ['date', 'when'],
   eventLink: ['eventlink', 'linktotheevent', 'link'],
   place: ['place', 'where'],
+  time: ['time', 'starttime', 'eventtime'],
 };
 
 /**
@@ -179,12 +180,15 @@ function rowsToEvents(rows: string[][]): EventInfo[] {
       continue;
     }
 
+    const time = cell(row, columns.time).trim();
+
     events.push({
       id: `sheet-${i + 1}`,
       eventName,
       date,
       eventLink: cell(row, columns.eventLink).trim(),
       place: cell(row, columns.place).trim(),
+      ...(time ? { time } : {}),
     });
   }
 
