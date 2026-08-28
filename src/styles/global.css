@@ -3,6 +3,7 @@
 :root {
   --bg: #f4efe8;
   --surface: #ffffff;
+  --toolbar: #fffcf9;
   --text: #1c1917;
   --muted: #57534e;
   --border: #e7e5e4;
@@ -14,12 +15,27 @@
   --font-display: 'Fraunces', Georgia, serif;
 }
 
+html[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #1c1917;
+  --surface: #292524;
+  --toolbar: #221f1c;
+  --text: #f5f5f4;
+  --muted: #a8a29e;
+  --border: #44403c;
+  --brand: #2dd4bf;
+  --brand-dark: #5eead4;
+  --accent: #f472b6;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+}
+
 * {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  color-scheme: light dark;
 }
 
 html,
@@ -40,7 +56,7 @@ body {
 
 a:focus-visible,
 button:focus-visible {
-  outline: 3px solid rgba(15, 118, 110, 0.45);
+  outline: 3px solid color-mix(in srgb, var(--brand) 50%, transparent);
   outline-offset: 2px;
 }
 
@@ -50,7 +66,7 @@ button:focus-visible {
   top: -40px;
   z-index: 30;
   background: var(--brand);
-  color: white;
+  color: var(--surface);
   padding: 0.5rem 0.8rem;
   border-radius: 8px;
 }
@@ -59,9 +75,21 @@ button:focus-visible {
   top: 1rem;
 }
 
+.toastui-calendar-layout {
+  color: var(--text);
+}
+
 .toastui-calendar-popup a.event-detail-link {
   display: inline-flex;
   margin-top: 0.35rem;
   color: var(--brand-dark);
   font-weight: 600;
+}
+
+html[data-theme='dark'] .toastui-calendar-popup,
+html[data-theme='dark'] .toastui-calendar-see-more {
+  background-color: var(--surface);
+  color: var(--text);
+  border-color: var(--border);
+  box-shadow: var(--shadow);
 }

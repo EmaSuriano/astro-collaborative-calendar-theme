@@ -65,7 +65,7 @@ const { events } = Astro.props;
     align-items: center;
     padding: 1rem 1.1rem;
     border-bottom: 1px solid var(--border);
-    background: #fffcf9;
+    background: var(--toolbar);
   }
 
   .calendar-nav,
@@ -92,7 +92,7 @@ const { events } = Astro.props;
     font: inherit;
     cursor: pointer;
     border: 1px solid var(--border);
-    background: white;
+    background: var(--surface);
     color: var(--text);
     border-radius: 999px;
     padding: 0.4rem 0.85rem;
@@ -109,14 +109,14 @@ const { events } = Astro.props;
   .calendar-toolbar button[data-cal-action='today'] {
     background: var(--brand);
     border-color: var(--brand);
-    color: white;
+    color: var(--surface);
   }
 
   .calendar-toolbar button[data-cal-action='today']:hover,
   .calendar-toolbar button[aria-pressed='true']:hover {
     background: var(--brand-dark);
     border-color: var(--brand-dark);
-    color: white;
+    color: var(--surface);
   }
 
   .calendar-frame {
