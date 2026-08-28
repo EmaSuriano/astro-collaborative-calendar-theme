@@ -224,6 +224,32 @@ export function initEventCalendar(root: HTMLElement, events: EventInfo[]): Calen
     syncTitle();
   });
 
+  const isInsideOpenPopup = (node: EventTarget | null) =>
+    node instanceof Element &&
+    Boolean(
+      node.closest(
+        '.toastui-calendar-popup-container, .toastui-calendar-see-more-container, .toastui-calendar-see-more',
+      ),
+    );
+
+  const closeOpenPopup = () => {
+    const overlay = container.querySelector<HTMLElement>('.toastui-calendar-popup-overlay');
+    if (!overlay || overlay.style.display === 'none') return;
+    overlay.click();
+  };
+
+  document.addEventListener('pointerdown', (event) => {
+    if (!isInsideOpenPopup(event.target)) {
+      closeOpenPopup();
+    }
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      closeOpenPopup();
+    }
+  });
+
   syncTitle();
   return calendar;
 }
