@@ -1,92 +1,79 @@
-# astro-collaborative-calendar-theme
+# Astro Collaborative Calendar Theme
 
-An Astro theme for a public collaborative event calendar.
+A public event calendar for meetups and organizers. People add events through a Google Form, answers land in a Google Spreadsheet, and the site reads those rows at build time.
 
-It is an Astro remake of the [Gatsby event calendar starter](https://github.com/EmaSuriano/gatsby-starter-event-calendar). The month grid is [TOAST UI Calendar](https://github.com/nhn/tui.calendar) v2. People add events through a Google Form; answers land in a Google Spreadsheet; the site reads those rows at **build time**.
+This is the maintained remake of [gatsby-starter-event-calendar](https://github.com/EmaSuriano/gatsby-starter-event-calendar) (archived). Same Form + Sheet idea, with [Astro](https://astro.build), [TOAST UI Calendar](https://ui.toast.com/tui-calendar) v2, and GitHub Pages. No Gatsby, no Grommet, no GCP service account.
 
 ## Live site
 
 https://emasuriano.github.io/astro-collaborative-calendar-theme/
 
+Subscribe in Google/Apple Calendar: [events.ics](https://emasuriano.github.io/astro-collaborative-calendar-theme/events.ics)
+
 ## Features
 
-- Hero with title, subtitle, jump to the calendar, and **Add your event!** (Google Form)
-- Month view by default, with week and day toggles (TOAST UI Calendar)
-- Event detail popup (name, date, place, link)
-- Display-only calendar; create and edit by dragging are disabled
-- Theme and data-source config in `src/config.ts`
+- Month calendar by default, with week and day views (TOAST UI Calendar)
+- Event detail popup (name, date, time, place, link)
+- Add your event via Google Form
+- Optional Time column: timed events last 90 minutes; blank time stays all-day
+- Past events stay on the calendar; far-future junk is capped
+- Dark theme with a toggle (follows system preference, then remembers the choice)
+- ICS subscribe feed
 - Build-time Google Sheets CSV fetch, with sample events as fallback
-- Responsive layout and basic SEO tags
-- GitHub Pages deploy on push to `main`, manual dispatch, and a 6-hour schedule
+- GitHub Pages on push to main, manual dispatch, a 6-hour cron, and an optional rebuild on form submit
+- CI on pull requests (astro check + astro build)
+- Config in src/config.ts
 
 ## How events get onto the calendar
-
-Same loop as the Gatsby starter, without a GCP service account:
 
 1. Someone submits the Google Form (`formLink`).
 2. Answers are stored in a Google Spreadsheet (`spreadsheetLink`).
 3. `astro build` fetches the sheet as CSV and maps rows to calendar events.
-4. GitHub Actions rebuilds the Pages site on push to `main` and every 6 hours, so new form answers show up after the next build.
+4. GitHub Actions rebuilds Pages on push to `main`, every 6 hours, and (if you wire it up) on each form submit.
 
-No `googleapis` client and no service-account JSON. The sheet must be readable as CSV over HTTP (see setup below). If the fetch fails (401, network, empty sheet), the build logs a warning and falls back to the sample events in `src/data/events.ts`, so `astro build` never fails.
+No `googleapis` client and no service-account JSON. Publish the sheet to the web so the CSV is public. If the fetch fails, the build logs a warning and falls back to `src/data/events.ts`.
 
 ## Set up your own Form + Spreadsheet
 
 The original write-up is [Building a collaborative calendar with Google and Gatsby](https://emasuriano.com/blog/building-a-collaborative-calendar-with-google-and-gatsby). The flow is the same; this theme uses **Publish to the web** instead of a service account.
 
-1. **Create a Google Form** ([forms.new](https://forms.new)) with questions for the event name, when, where, and a link. The demo uses:
-   - What is the name?
-   - When?
-   - Time (optional; shown on the calendar)
-   - Where?
-   - Link to the event
-2. **Send responses to a spreadsheet.** In the form, open the Responses tab and click the green Sheets icon ("View responses in Sheets"). New form answers will append as rows.
-3. **Make the sheet readable at build time (both of these):**
-   - Share the sheet: **Anyone with the link can view**.
-   - **File → Share → Publish to the web**, choose the entire document (or the responses sheet) and CSV / web page. Until this is done, unauthenticated CSV URLs return 401 and the site shows sample events.
-4. **Point the theme at your form and sheet.** In `src/config.ts` set:
-   - `formLink` — the share URL of the form (`https://forms.gle/...`)
-   - `spreadsheetLink` — the spreadsheet URL (`https://docs.google.com/spreadsheets/d/{id}/edit?...`)
-   - `sheetColumns` — header text for `eventName`, `date`, `eventLink`, and `place` if your questions differ
-   - optional `spreadsheetCsvUrl` — Publish-to-the-web link (`.../pubhtml` or `.../pub?output=csv`). The demo sheet uses this so GitHub Actions can read it without a service account.
-5. **Deploy.** Push to `main` (or run the workflow manually). GitHub Actions also rebuilds on a schedule (`0 */6 * * *` UTC), so new answers appear without another git push.
+1. Create a Google Form ([forms.new](https://forms.new)) with questions for name, when, time, where, and a link.
+2. Send responses to a spreadsheet (Responses tab, green Sheets icon).
+3. Make the sheet readable at build time: share with anyone who has the link, then File, Share, Publish to the web. Until that is done, CSV URLs return 401 and the site shows sample events.
+4. Point the theme at your form and sheet in `src/config.ts`: `formLink`, `spreadsheetLink`, `sheetColumns`, and `spreadsheetCsvUrl` (the pubhtml or pub?output=csv link).
+5. Deploy by pushing to `main`, or run the Deploy to GitHub Pages workflow.
 
-The loader tries, in order:
+The loader tries `spreadsheetCsvUrl` first (`/pubhtml` becomes `pub?output=csv`), then published `/d/e/{id}/pub?output=csv`, then the spreadsheet export and gviz CSV URLs.
 
-- `spreadsheetCsvUrl` (a `/pubhtml` link is rewritten to `pub?output=csv`)
-- a published `/d/e/{id}/pub?output=csv` URL derived from `spreadsheetLink` if it is a published link
-- `https://docs.google.com/spreadsheets/d/{id}/export?format=csv`
-- `https://docs.google.com/spreadsheets/d/{id}/gviz/tq?tqx=out:csv`
+Header matching is case-insensitive and ignores punctuation, spaces, underscores, and emoji. A Timestamp column is ignored. Rows missing a name or date are skipped.
 
-Header matching is flexible: case-insensitive, punctuation/underscores/spaces ignored. The original GraphQL slugs (`whatIsTheName____`, `when____`, `linkToTheEvent___`, `where____`) and the `EventInfo` field names also work. A Timestamp column is ignored. Rows missing a name or date are skipped.
+### Rebuild as soon as someone submits
 
-## Project structure
+The 6-hour cron is a safety net. To rebuild on each form answer, follow [docs/rebuild-on-form-submit.md](docs/rebuild-on-form-submit.md).
 
-    src/config.ts
-    src/types.ts
-    src/data/events.ts          # sample / fallback events
-    src/data/loadEvents.ts      # build-time Google Sheets CSV fetch
-    src/components/EventCalendar.astro
-    src/components/Hero.astro
-    src/pages/index.astro
-    .github/workflows/deploy.yml
 
 ## Local development
 
-Install dependencies, then run the dev, build, or preview scripts from `package.json`.
-
-The site base is `/astro-collaborative-calendar-theme` so assets work on GitHub project pages.
+Requires Node 22.12 or newer. Scripts live in package.json: dev, check, build, preview. The site base is /astro-collaborative-calendar-theme so assets work on GitHub project pages.
 
 ## Events
 
-Each event uses the same fields as the Gatsby starter: `id`, `eventName`, `date`, `eventLink`, `place`, plus optional `time`.
+Each event: id, eventName, date, eventLink, place, optional time.
 
-`date` can be ISO 8601, `MM/dd/yyyy`, `M/D/YYYY` (no leading zeros), or a datetime string Google Sheets often emits (`M/D/YYYY HH:mm:ss`).
+date can be ISO 8601, MM/dd/yyyy, M/D/YYYY, or a Sheets datetime. time is the Google Forms time question. Timed events last 90 minutes by default. The ICS feed uses the same event window as the homepage.
 
-`time` is the Google Forms time question (column `Time`). Values like `10:10:00 AM` become timed events on the calendar; a blank Time cell stays all-day. Timed events last 90 minutes by default.
+## Deploy and CI
 
-## Deploy
+Deploy workflow: push to main, workflow_dispatch, cron every 6 hours, repository_dispatch type rebuild-site.
 
-The site is published to GitHub Pages from `main`. Config: site is `https://emasuriano.github.io` and base is `/astro-collaborative-calendar-theme`.
+CI workflow: pull requests and push to main run astro check and astro build.
 
-Rebuilds also run every 6 hours so the calendar picks up new form responses without a commit.
+Live URL: https://emasuriano.github.io/astro-collaborative-calendar-theme/
+
+## Project structure
+
+src/config.ts, src/data/loadEvents.ts, src/data/events.ts, src/pages/index.astro, src/pages/events.ics.ts, src/components/EventCalendar.astro, src/components/ThemeToggle.astro, src/styles/global.css, .github/workflows/deploy.yml, .github/workflows/ci.yml, docs/rebuild-on-form-submit.md
+
+## Why not the Gatsby starter?
+
+The [gatsby-starter-event-calendar](https://github.com/EmaSuriano/gatsby-starter-event-calendar) repo is archived. This theme is the same product with a smaller stack: Astro instead of a React tree, TOAST UI instead of a custom month grid, published CSV instead of a GCP service account, and GitHub Pages CI/CD built in.
