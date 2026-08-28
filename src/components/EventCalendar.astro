@@ -88,7 +88,7 @@ const { events } = Astro.props;
     text-transform: capitalize;
   }
 
-  button {
+  .calendar-toolbar button {
     font: inherit;
     cursor: pointer;
     border: 1px solid var(--border);
@@ -99,21 +99,21 @@ const { events } = Astro.props;
     min-height: 2.25rem;
   }
 
-  button:hover,
-  button:focus-visible {
+  .calendar-toolbar button:hover,
+  .calendar-toolbar button:focus-visible {
     border-color: var(--brand);
     color: var(--brand-dark);
   }
 
-  button[aria-pressed='true'],
-  button[data-cal-action='today'] {
+  .calendar-toolbar button[aria-pressed='true'],
+  .calendar-toolbar button[data-cal-action='today'] {
     background: var(--brand);
     border-color: var(--brand);
     color: white;
   }
 
-  button[data-cal-action='today']:hover,
-  button[aria-pressed='true']:hover {
+  .calendar-toolbar button[data-cal-action='today']:hover,
+  .calendar-toolbar button[aria-pressed='true']:hover {
     background: var(--brand-dark);
     border-color: var(--brand-dark);
     color: white;
