@@ -13,7 +13,26 @@ export const appConfig = {
     name: 'Ema Suriano',
     url: 'https://emasuriano.com',
   },
-  // Plug these in later when Google Forms / Sheets are wired up:
-  // formLink: 'https://forms.gle/...',
-  // spreadsheetLink: 'https://docs.google.com/spreadsheets/d/...',
-} as const;
+  /** Google Form that writes new events into the spreadsheet. */
+  formLink: 'https://forms.gle/5Kv3XKJBA5g5FWRC7',
+  /** Spreadsheet that stores form answers. Used as a human-facing link. */
+  spreadsheetLink:
+    'https://docs.google.com/spreadsheets/d/1e6mNWZZLuBBFk2c-zGRSSh8g5mqoQUPbW78NmA_EI88/edit?usp=sharing',
+  /**
+   * Optional explicit CSV endpoint. When omitted, the build-time loader
+   * derives export / gviz URLs from `spreadsheetLink`.
+   */
+  spreadsheetCsvUrl: undefined as string | undefined,
+  /**
+   * Spreadsheet column headers for each EventInfo field.
+   * Defaults match the original Gatsby form questions. Matching is
+   * case-insensitive and ignores punctuation, spaces, and underscores,
+   * so GraphQL-style slugs like `whatIsTheName____` also work.
+   */
+  sheetColumns: {
+    eventName: 'What is the name?',
+    date: 'When?',
+    eventLink: 'Link to the event',
+    place: 'Where?',
+  },
+};

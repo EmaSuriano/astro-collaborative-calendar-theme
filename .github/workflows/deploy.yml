@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
   workflow_dispatch:
+  schedule:
+    # Rebuild so new Google Form answers show up without a git push.
+    - cron: '0 */6 * * *'
 
 permissions:
   contents: read

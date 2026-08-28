@@ -7,7 +7,11 @@ import { appConfig } from '../config';
     Developed by
     <a href={appConfig.author.url} rel="noopener noreferrer">{appConfig.author.name}</a>
   </p>
-  <p>Built with Astro and TOAST UI Calendar</p>
+  <p>
+    Events sourced from
+    <a href={appConfig.spreadsheetLink} target="_blank" rel="noopener noreferrer">Google Sheets</a>
+    · Built with Astro and TOAST UI Calendar
+  </p>
 </footer>
 
 <style>

@@ -19,13 +19,28 @@ import { appConfig } from '../config';
     <p class="subtitle">{appConfig.subTitle}</p>
     <p class="lede">
       This is a collaborative event calendar for meetups and community organizers.
-      Everyone sees the same public schedule — add your own events when submissions
-      open, or edit the sample data in <code>src/data/events.ts</code> today.
+      Everyone sees the same public schedule — add yours with the form, and it
+      lands on the calendar after the next site rebuild.
     </p>
 
     <div class="actions">
       <a class="button primary" href="#calendars">See all the events</a>
+      <a
+        class="button secondary"
+        href={appConfig.formLink}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Add your event!
+      </a>
     </div>
+
+    <p class="source">
+      Events are loaded from a
+      <a href={appConfig.spreadsheetLink} target="_blank" rel="noopener noreferrer">
+        Google Spreadsheet
+      </a>.
+    </p>
   </div>
 </section>
 
@@ -71,6 +86,10 @@ import { appConfig } from '../config';
 
   .actions {
     margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
   }
 
   .button {
@@ -95,10 +114,25 @@ import { appConfig } from '../config';
     background: var(--brand-dark);
   }
 
-  code {
-    font-size: 0.92em;
-    background: rgba(255, 255, 255, 0.7);
-    padding: 0.1em 0.35em;
-    border-radius: 6px;
+  .secondary {
+    background: transparent;
+    color: var(--brand-dark);
+    border: 2px solid var(--brand);
+  }
+
+  .secondary:hover,
+  .secondary:focus-visible {
+    background: rgba(15, 118, 110, 0.08);
+  }
+
+  .source {
+    margin: 1.25rem 0 0;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .source a {
+    color: var(--brand-dark);
+    font-weight: 600;
   }
 </style>
