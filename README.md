@@ -1,46 +1,22 @@
-# Astro Starter Kit: Basics
+# astro-collaborative-calendar-theme
 
-```sh
-npm create astro@latest -- --template basics
-```
+An Astro theme for a collaborative calendar. This is still early: the starter is in place, and the calendar itself is next.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Live site
 
-## 🚀 Project Structure
+https://emasuriano.github.io/astro-collaborative-calendar-theme/
 
-Inside of your Astro project, you'll see the following folders and files:
+## Deploy
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+The site is published to GitHub Pages from the main branch.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+A CI workflow on main builds and publishes the site.
+See the official Astro GitHub Pages guide for the pattern used here.
 
-## 🧞 Commands
+Config: site is https://emasuriano.github.io and base is /astro-collaborative-calendar-theme.
 
-All commands are run from the root of the project, from a terminal:
+## Local development
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Local scripts live in package.json.
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Guide: https://docs.astro.build/en/guides/deploy/github/
