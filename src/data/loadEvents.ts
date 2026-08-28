@@ -3,7 +3,8 @@ import type { EventInfo } from '../types';
 import { parseEventDate } from '../utils/parseEventDate';
 import { events as sampleEvents } from './events';
 
-const SPREADSHEET_ID_RE = /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
+const SPREADSHEET_ID_RE = /\/spreadsheets\/d\/(?!e\/)([a-zA-Z0-9-_]+)/;
+const PUBLISHED_SHEET_RE = /\/spreadsheets\/d\/e\/([^/]+)\/pub(?:html)?(?:\?[^#]*)?/;
 const FETCH_TIMEOUT_MS = 12_000;
 
 type EventField = Exclude<keyof EventInfo, 'id'>;
@@ -18,7 +19,7 @@ const FIELD_ALIASES: Record<EventField, string[]> = {
 /**
  * Fetch events from the configured Google Spreadsheet CSV at build time.
  * Falls back to sample events if the sheet cannot be read so `astro build`
- * never fails (expected until the sheet is published to the web).
+ * never fails.
  */
 export async function loadEvents(): Promise<EventInfo[]> {
   try {
@@ -26,7 +27,7 @@ export async function loadEvents(): Promise<EventInfo[]> {
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
     console.warn(
-      `[events] Could not load Google Sheet events: ${reason}. Falling back to sample events in src/data/events.ts. Publish the spreadsheet to the web (File → Share → Publish to the web) so live form answers appear.`,
+      `[events] Could not load Google Sheet events: ${reason}. Falling back to sample events in src/data/events.ts.`,
     );
     return sampleEvents;
   }
@@ -56,27 +57,57 @@ async function loadFromSheet(): Promise<EventInfo[]> {
   }
 
   console.warn(
-    '[events] Falling back to sample events in src/data/events.ts. Publish the spreadsheet to the web (File → Share → Publish to the web) so live form answers appear.',
+    '[events] Falling back to sample events in src/data/events.ts.',
   );
   return sampleEvents;
 }
 
 function csvUrls(): string[] {
-  if (appConfig.spreadsheetCsvUrl) {
-    return [appConfig.spreadsheetCsvUrl];
-  }
+  const urls: string[] = [];
+  const seen = new Set<string>();
+
+  const add = (url: string | undefined) => {
+    if (!url || seen.has(url)) {
+      return;
+    }
+    seen.add(url);
+    urls.push(url);
+  };
+
+  add(publishedCsvUrl(appConfig.spreadsheetCsvUrl));
+  add(publishedCsvUrl(appConfig.spreadsheetLink));
 
   const id = spreadsheetId(appConfig.spreadsheetLink);
-  if (!id) {
+  if (id) {
+    add(`https://docs.google.com/spreadsheets/d/${id}/export?format=csv`);
+    add(`https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv`);
+  }
+
+  if (urls.length === 0) {
     throw new Error(
-      `Could not derive a spreadsheet id from spreadsheetLink: ${appConfig.spreadsheetLink}`,
+      `Could not derive a CSV URL from spreadsheetCsvUrl/spreadsheetLink: ${appConfig.spreadsheetCsvUrl ?? appConfig.spreadsheetLink}`,
     );
   }
 
-  return [
-    `https://docs.google.com/spreadsheets/d/${id}/export?format=csv`,
-    `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:csv`,
-  ];
+  return urls;
+}
+
+/** Turn a Publish-to-the-web html/csv link into the CSV endpoint. */
+function publishedCsvUrl(link: string | undefined): string | undefined {
+  if (!link) {
+    return undefined;
+  }
+
+  const published = PUBLISHED_SHEET_RE.exec(link);
+  if (published) {
+    return `https://docs.google.com/spreadsheets/d/e/${published[1]}/pub?output=csv`;
+  }
+
+  if (/output=csv/i.test(link) || link.endsWith('.csv')) {
+    return link;
+  }
+
+  return undefined;
 }
 
 function spreadsheetId(link: string): string | undefined {

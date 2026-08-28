@@ -47,11 +47,13 @@ The original write-up is [Building a collaborative calendar with Google and Gats
    - `formLink` — the share URL of the form (`https://forms.gle/...`)
    - `spreadsheetLink` — the spreadsheet URL (`https://docs.google.com/spreadsheets/d/{id}/edit?...`)
    - `sheetColumns` — header text for `eventName`, `date`, `eventLink`, and `place` if your questions differ
-   - optional `spreadsheetCsvUrl` — override the CSV endpoint if you need a specific published URL
+   - optional `spreadsheetCsvUrl` — Publish-to-the-web link (`.../pubhtml` or `.../pub?output=csv`). The demo sheet uses this so GitHub Actions can read it without a service account.
 5. **Deploy.** Push to `main` (or run the workflow manually). GitHub Actions also rebuilds on a schedule (`0 */6 * * *` UTC), so new answers appear without another git push.
 
-The loader derives a CSV URL from the spreadsheet id:
+The loader tries, in order:
 
+- `spreadsheetCsvUrl` (a `/pubhtml` link is rewritten to `pub?output=csv`)
+- a published `/d/e/{id}/pub?output=csv` URL derived from `spreadsheetLink` if it is a published link
 - `https://docs.google.com/spreadsheets/d/{id}/export?format=csv`
 - `https://docs.google.com/spreadsheets/d/{id}/gviz/tq?tqx=out:csv`
 
