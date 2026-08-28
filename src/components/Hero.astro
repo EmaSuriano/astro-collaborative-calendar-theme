@@ -35,12 +35,6 @@ import { appConfig } from '../config';
       </a>
     </div>
 
-    <p class="source">
-      Events are loaded from a
-      <a href={appConfig.spreadsheetLink} target="_blank" rel="noopener noreferrer">
-        Google Spreadsheet
-      </a>.
-    </p>
   </div>
 </section>
 
@@ -123,16 +117,5 @@ import { appConfig } from '../config';
   .secondary:hover,
   .secondary:focus-visible {
     background: rgba(15, 118, 110, 0.08);
-  }
-
-  .source {
-    margin: 1.25rem 0 0;
-    color: var(--muted);
-    font-size: 0.95rem;
-  }
-
-  .source a {
-    color: var(--brand-dark);
-    font-weight: 600;
   }
 </style>

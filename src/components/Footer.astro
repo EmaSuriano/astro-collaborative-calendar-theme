@@ -1,5 +1,10 @@
 ---
 import { appConfig } from '../config';
+
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const icsHref = `${base}events.ics`;
 ---
 
 <footer>
@@ -8,10 +13,7 @@ import { appConfig } from '../config';
     <a href={appConfig.author.url} rel="noopener noreferrer">{appConfig.author.name}</a>
   </p>
   <p>
-    Events sourced from
-    <a href={appConfig.spreadsheetLink} target="_blank" rel="noopener noreferrer">Google Sheets</a>
-    ·
-    <a href={`${import.meta.env.BASE_URL}events.ics`}>Subscribe (.ics)</a>
+    <a href={icsHref}>Subscribe (.ics)</a>
     · Built with Astro and TOAST UI Calendar
   </p>
 </footer>
