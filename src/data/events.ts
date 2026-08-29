@@ -11,64 +11,64 @@ import type { EventInfo } from '../types';
  */
 const samples: Omit<EventInfo, 'id' | 'date'>[] = [
   {
-    eventName: 'JS Berlin Meetup',
-    place: 'c-base, Berlin',
-    eventLink: 'https://www.meetup.com/',
+    eventName: 'Harbor JS Meetup',
+    place: 'Harbor Hall',
+    eventLink: 'https://example.com',
   },
   {
-    eventName: 'Design Systems Circle',
-    place: 'Betahaus, Berlin',
-    eventLink: 'https://www.meetup.com/',
+    eventName: 'Design Circle',
+    place: 'Riverside Studio',
+    eventLink: 'https://example.com',
   },
   {
     eventName: 'Open Source Friday',
-    place: 'Factory Berlin',
-    eventLink: 'https://www.meetup.com/',
+    place: 'Community Lab',
+    eventLink: 'https://example.com',
   },
   {
     eventName: 'Python User Group',
-    place: 'Mozilla Berlin',
-    eventLink: 'https://www.meetup.com/',
+    place: 'Northside Library',
+    eventLink: 'https://example.com',
   },
   {
-    eventName: 'Women Who Code',
-    place: 'SAP Office, Berlin',
-    eventLink: 'https://www.meetup.com/',
-  },
-  {
-    eventName: 'Rust Berlin',
-    place: 'Thoughtworks, Berlin',
-    eventLink: 'https://www.meetup.com/',
-  },
-  {
-    eventName: 'Accessibility Working Group',
+    eventName: 'Access Working Group',
     place: 'Online',
-    eventLink: 'https://www.meetup.com/',
+    eventLink: 'https://example.com',
+  },
+  {
+    eventName: 'Rust Meetup',
+    place: 'Maker Space',
+    eventLink: 'https://example.com',
   },
   {
     eventName: 'GraphQL Meetup',
-    place: 'Delivery Hero, Berlin',
-    eventLink: 'https://www.meetup.com/',
+    place: 'Tech Hub',
+    eventLink: 'https://example.com',
   },
   {
     eventName: 'Hack Night',
-    place: 'Impact Hub, Berlin',
-    eventLink: 'https://www.meetup.com/',
+    place: 'Civic Workshop',
+    eventLink: 'https://example.com',
   },
   {
-    eventName: 'Astro Community Call',
+    eventName: 'Frontend Community Call',
     place: 'Online',
-    eventLink: 'https://astro.build/chat',
+    eventLink: 'https://example.com',
   },
   {
-    eventName: 'CSS Berlin',
-    place: 'Spektral, Berlin',
-    eventLink: 'https://www.meetup.com/',
+    eventName: 'CSS Meetup',
+    place: 'Studio Four',
+    eventLink: 'https://example.com',
   },
   {
-    eventName: 'DevOps & Cloud Meetup',
-    place: 'AWS Loft, Berlin',
-    eventLink: 'https://www.meetup.com/',
+    eventName: 'Cloud Meetup',
+    place: 'Example Loft',
+    eventLink: 'https://example.com',
+  },
+  {
+    eventName: 'Product Book Club',
+    place: 'Online',
+    eventLink: 'https://example.com',
   },
 ];
 
