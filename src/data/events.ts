@@ -9,7 +9,7 @@ import type { EventInfo } from '../types';
  * Dates are computed from "today" at build time so the calendar always
  * looks populated across this month and the next one or two.
  */
-const samples: Omit<EventInfo, 'id' | 'date'>[
+const samples: Omit<EventInfo, 'id' | 'date'>[] = [
   {
     eventName: 'Harbor JS Meetup',
     place: 'Harbor Hall',
