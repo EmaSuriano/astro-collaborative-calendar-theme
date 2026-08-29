@@ -10,8 +10,8 @@ export const appConfig = {
   limitMonthInTheFuture: 4,
   githubUrl: 'https://github.com/EmaSuriano/astro-collaborative-calendar-theme',
   author: {
-    name: 'Ema Suriano',
-    url: 'https://emasuriano.com',
+    name: 'Alex Rivera',
+    url: 'https://example.com',
   },
   /** Google Form that writes new events into the spreadsheet. */
   formLink: 'https://forms.gle/5Kv3XKJBA5g5FWRC7',
