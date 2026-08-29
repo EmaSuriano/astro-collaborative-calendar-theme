@@ -14,16 +14,16 @@ export const appConfig = {
     url: 'https://emasuriano.com',
   },
   /** Google Form that writes new events into the spreadsheet. */
-  formLink: 'https://forms.gle/5Kv3XKJBA5g5FWRC7',
+  formLink: 'https://example.com',
   /** Spreadsheet that stores form answers. Used as a human-facing link. */
   spreadsheetLink:
-    'https://docs.google.com/spreadsheets/d/1e6mNWZZLuBBFk2c-zGRSSh8g5mqoQUPbW78NmA_EI88/edit?usp=sharing',
+    'https://example.com',
   /**
    * Published-to-the-web URL (html or csv). The loader turns `/pubhtml`
    * into `pub?output=csv` so GitHub Actions can fetch rows without auth.
    */
   spreadsheetCsvUrl:
-    'https://docs.google.com/spreadsheets/d/e/2PACX-1vQruXhA2vDFmp22O7KcqzvGdNw2dBQIRZjD0C8JlcGn5_hp3wOIX6dHUfAW0kLNhyUuqXDiRLPzA-dW/pubhtml',
+    '',
   /**
    * Spreadsheet column headers for each EventInfo field.
    * Defaults match the original Gatsby form questions. Matching is
