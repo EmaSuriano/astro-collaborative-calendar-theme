@@ -10,6 +10,14 @@ https://emasuriano.github.io/astro-collaborative-calendar-theme/
 
 Subscribe in Google/Apple Calendar: [events.ics](https://emasuriano.github.io/astro-collaborative-calendar-theme/events.ics)
 
+## Screenshots 📸
+
+Captured from the [live site](https://emasuriano.github.io/astro-collaborative-calendar-theme/) with [shot-scraper](https://github.com/simonw/shot-scraper) via [`shots.yml`](shots.yml) (workflow: [`.github/workflows/screenshots.yml`](.github/workflows/screenshots.yml)). Light and dark for Home.
+
+| Light | Dark |
+| ----- | ---- |
+| ![Home - Light](screenshots/home-light.png) | ![Home - Dark](screenshots/home-dark.png) |
+
 ## Features
 
 - Month calendar by default, with week and day views (TOAST UI Calendar)

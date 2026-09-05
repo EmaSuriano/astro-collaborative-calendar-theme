@@ -1,0 +1,17 @@
+- url: https://emasuriano.github.io/astro-collaborative-calendar-theme/
+  output: screenshots/home-light.png
+  width: 1440
+  height: 900
+  wait: 2000
+  javascript: |
+    localStorage.setItem('theme', 'light');
+    document.documentElement.dataset.theme = 'light';
+
+- url: https://emasuriano.github.io/astro-collaborative-calendar-theme/
+  output: screenshots/home-dark.png
+  width: 1440
+  height: 900
+  wait: 2000
+  javascript: |
+    localStorage.setItem('theme', 'dark');
+    document.documentElement.dataset.theme = 'dark';
